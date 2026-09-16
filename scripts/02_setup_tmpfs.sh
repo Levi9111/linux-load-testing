@@ -1,3 +1,13 @@
+#!/bin/bash
+#^^^^^^^^^^^^^^^
+# Figured out this line is needed
+# at the very first so the kernel knows which
+# interpreter to use when the file is executed 
+# directly. Without it, sudo tries to exec the file,
+# the kernel can't figure out what to do with it,
+# and I get the misleading "command not found" error
+# even though the file clearly exists.
+
 SVC_NAME="$1"
 if [[ -z "$SVC_NAME" ]]; then
     echo "Error: SVC_NAME is not set. Pass it as an argument."

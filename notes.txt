@@ -1,0 +1,5 @@
+Every script needs #!/bin/bash as the first line. 
+Without it, exec fails with a confusing "command not found."
+
+Every script needs chmod +x. Without it, sudo also fails with 
+"command not found." touch alone doesn't set the execute bit.
