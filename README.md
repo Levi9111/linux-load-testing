@@ -1,11 +1,38 @@
 # Linux Load Test — bgdsvc_shanjid502
 
-BongoDev Linux Fundamentals / DevOps Practical Lab
+[![Platform](https://img.shields.io/badge/Platform-Fedora%2044-blue?logo=fedora)](https://getfedora.org/)
+[![Shell](https://img.shields.io/badge/Shell-Bash-4EAA25?logo=gnubash&logoColor=white)](https://www.gnu.org/software/bash/)
+[![Security](https://img.shields.io/badge/SELinux-Enforcing-success)](https://github.com/SELinuxProject)
+[![SSH](https://img.shields.io/badge/SSH%20Port-2222%20Hardened-orange?logo=openssh)](https://www.openssh.com/)
+[![CI](https://img.shields.io/badge/Lint-ShellCheck-informational?logo=githubactions)](.github/workflows/lint.yml)
+
+BongoDev Linux Fundamentals / DevOps Practical Lab  
 Linux Deep Dive · DevOps Practical Lab
 
-A test environment for a new internal service: service account, fast
-scratch storage, load testing, SSH access, automated monitoring, and
-full teardown. Built and tested on **Fedora 44**.
+A production-grade test environment for a new internal service: dedicated service account, fast in-memory scratch storage (tmpfs), simulated workload stress testing, hardened SSH key-based access, automated cron monitoring, daily log rotation, and clean reverse-order teardown. Built and verified on **Fedora 44**.
+
+---
+
+## Architecture & Lifecycle
+
+```mermaid
+flowchart TD
+    subgraph Build ["1. Provisioning & Setup"]
+        A["01_create_user.sh<br/>Identity: bgdsvc_shanjid502 (nologin)"] --> B["02_setup_tmpfs.sh<br/>RAM Scratch: /mnt/..._tmp (capped at 256M)"]
+        B --> C["03_stress_and_populate.sh<br/>CPU (2 cores), RAM (200M), Disk (30x10M)"]
+        C --> D["SSH Hardening<br/>Port 2222, Keys only, AllowUsers"]
+        D --> E["Monitoring & Logrotate<br/>5-min Cron Health Check + Daily Rotate"]
+    end
+
+    subgraph Teardown ["2. Reverse Teardown (04_cleanup.sh)"]
+        F["1. Kill running processes (pkill -u)"] --> G["2. Remove cron automation & rotate rules"]
+        G --> H["3. Unmount tmpfs & remove mountpoint"]
+        H --> I["4. Remove log directories (/var/log/...)"]
+        I --> J["5. Delete user identity (userdel -r)"]
+    end
+
+    Build -.->|"Test Completed"| Teardown
+```
 
 ---
 
@@ -324,20 +351,48 @@ See `observations.md` for the full write-up. Summary:
 
 ---
 
-## Screenshots
+## Screenshots & Verification Gallery
 
-See `screenshots/` for evidence of each part:
+Every step of the lab has been executed, observed, and recorded. Expand each section below to inspect the evidence.
 
-- `00_svc_name.png` — `echo $SVC_NAME`
-- `01_id_created.png` — `id` output after account creation
-- `02_df_before.png` — tmpfs empty, 256M free
-- `02_df_after.png` — tmpfs full, 100% used
-- `03_free_before.png` / `03_free_during.png` / `03_free_after.png` —
-  memory before / during / after stress
-- `03_dmesg_oom.png` — OOM killer check (no kills)
-- `04_ssh_success.png` — SSH login as service account on port 2222
-- `05_crontab_l.png` — scheduled jobs
-- `06_cleanup_verify.png` — clean state after teardown
+<details open>
+<summary><b>1. Service Identity & Storage Setup</b></summary>
+
+| Service Name Confirmation | Service Account Created (`id`) |
+| :---: | :---: |
+| ![SVC Name](screenshots/00_svc_name.png) | ![ID Created](screenshots/01_id_created.png) |
+
+| tmpfs Before Fill (Empty / 256M Free) | tmpfs After Fill (100% Cap Clean Failure) |
+| :---: | :---: |
+| ![df before](screenshots/02_df_before.png) | ![df after](screenshots/02_df_after.png) |
+
+</details>
+
+<details>
+<summary><b>2. System Under Stress & OOM Verification</b></summary>
+
+| Memory Before Stress | Memory During Combined Stress | Memory After Stress (Recovered) |
+| :---: | :---: | :---: |
+| ![free before](screenshots/03_free_before.png) | ![free during](screenshots/03_free_during.png) | ![free after](screenshots/03_free_after.png) |
+
+| OOM Killer Check (`dmesg` - No Kills) | Filling tmpfs in Action |
+| :---: | :---: |
+| ![dmesg oom](screenshots/03_dmesg_oom.png) | ![df fill](screenshots/02_df_fill.png) |
+
+</details>
+
+<details>
+<summary><b>3. SSH Hardening, Automation & Reverse Teardown</b></summary>
+
+| Key-Based SSH on Port 2222 | Cron Jobs Active (`crontab -l`) |
+| :---: | :---: |
+| ![ssh success](screenshots/04_ssh_success.png) | ![crontab l](screenshots/05_crontab_l.png) |
+
+| Logrotate Execution & Compression | Clean Teardown Verification |
+| :---: | :---: |
+| ![logrotate](screenshots/07_logrotate.png) | ![cleanup verify](screenshots/06_cleanup_verify.png) |
+
+</details>
 
 ---
 
