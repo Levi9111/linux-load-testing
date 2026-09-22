@@ -14,6 +14,7 @@ A production-grade test environment for a new internal service: dedicated servic
 ---
 
 <a id="table-of-contents"></a>
+
 ## 📑 Table of Contents
 
 - [📐 Architecture & Lifecycle](#architecture--lifecycle)
@@ -388,25 +389,25 @@ Every step of the lab has been executed, observed, and recorded. Expand each sec
 <details open>
 <summary><b>1. Service Identity & Storage Setup</b></summary>
 
-| Service Name Confirmation | Service Account Created (`id`) |
-| :---: | :---: |
+|        Service Name Confirmation         |        Service Account Created (`id`)        |
+| :--------------------------------------: | :------------------------------------------: |
 | ![SVC Name](screenshots/00_svc_name.png) | ![ID Created](screenshots/01_id_created.png) |
 
-| tmpfs Before Fill (Empty / 256M Free) | tmpfs After Fill (100% Cap Clean Failure) |
-| :---: | :---: |
-| ![df before](screenshots/02_df_before.png) | ![df after](screenshots/02_df_after.png) |
+|   tmpfs Before Fill (Empty / 256M Free)    | tmpfs After Fill (100% Cap Clean Failure) |
+| :----------------------------------------: | :---------------------------------------: |
+| ![df before](screenshots/02_df_before.png) | ![df after](screenshots/02_df_after.png)  |
 
 </details>
 
 <details>
 <summary><b>2. System Under Stress & OOM Verification</b></summary>
 
-| Memory Before Stress | Memory During Combined Stress | Memory After Stress (Recovered) |
-| :---: | :---: | :---: |
+|              Memory Before Stress              |         Memory During Combined Stress          |       Memory After Stress (Recovered)        |
+| :--------------------------------------------: | :--------------------------------------------: | :------------------------------------------: |
 | ![free before](screenshots/03_free_before.png) | ![free during](screenshots/03_free_during.png) | ![free after](screenshots/03_free_after.png) |
 
-| OOM Killer Check (`dmesg` - No Kills) | Filling tmpfs in Action |
-| :---: | :---: |
+|   OOM Killer Check (`dmesg` - No Kills)    |        Filling tmpfs in Action         |
+| :----------------------------------------: | :------------------------------------: |
 | ![dmesg oom](screenshots/03_dmesg_oom.png) | ![df fill](screenshots/02_df_fill.png) |
 
 </details>
@@ -414,12 +415,12 @@ Every step of the lab has been executed, observed, and recorded. Expand each sec
 <details>
 <summary><b>3. SSH Hardening, Automation & Reverse Teardown</b></summary>
 
-| Key-Based SSH on Port 2222 | Cron Jobs Active (`crontab -l`) |
-| :---: | :---: |
+|           Key-Based SSH on Port 2222           |      Cron Jobs Active (`crontab -l`)       |
+| :--------------------------------------------: | :----------------------------------------: |
 | ![ssh success](screenshots/04_ssh_success.png) | ![crontab l](screenshots/05_crontab_l.png) |
 
-| Logrotate Execution & Compression | Clean Teardown Verification |
-| :---: | :---: |
+|     Logrotate Execution & Compression      |             Clean Teardown Verification              |
+| :----------------------------------------: | :--------------------------------------------------: |
 | ![logrotate](screenshots/07_logrotate.png) | ![cleanup verify](screenshots/06_cleanup_verify.png) |
 
 </details>
@@ -446,6 +447,6 @@ committed to this repository. Only the `.pub` file is safe to share.
 
 ## Author
 
-- Name: Shanjd Ahmad.
+- Name: Shanjid Ahmad.
 - Service account: `bgdsvc_shanjid502`
-- Host: Fedora 44 (localhost)
+- Host: Fedora Workstation 44 (localhost)
