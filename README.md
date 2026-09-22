@@ -91,6 +91,10 @@ sudo dnf install -y openssh-server stress-ng policycoreutils-python-utils cronie
 
 ```
 linux-load-testing/
+├── .github/
+│   └── workflows/
+│       └── lint.yml
+├── .gitignore
 ├── README.md
 ├── observations.md
 ├── scripts/
@@ -104,14 +108,17 @@ linux-load-testing/
     ├── 00_svc_name.png
     ├── 01_id_created.png
     ├── 02_df_before.png
+    ├── 02_df_fill.png
     ├── 02_df_after.png
     ├── 03_free_before.png
     ├── 03_free_during.png
     ├── 03_free_after.png
     ├── 03_dmesg_oom.png
+    ├── 04_ssh_key_success.png
     ├── 04_ssh_success.png
     ├── 05_crontab_l.png
-    └── 06_cleanup_verify.png
+    ├── 06_cleanup_verify.png
+    └── 07_logrotate.png
 ```
 
 ---
@@ -447,6 +454,6 @@ committed to this repository. Only the `.pub` file is safe to share.
 
 ## Author
 
-- Name: Shanjid Ahmad.
+- Name: Shanjid Ahmad
 - Service account: `bgdsvc_shanjid502`
 - Host: Fedora Workstation 44 (localhost)
