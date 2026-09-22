@@ -13,6 +13,30 @@ A production-grade test environment for a new internal service: dedicated servic
 
 ---
 
+<a id="table-of-contents"></a>
+## 📑 Table of Contents
+
+- [📐 Architecture & Lifecycle](#architecture--lifecycle)
+- [👤 Service Account](#service-account)
+- [📦 Prerequisites](#prerequisites)
+- [📂 Repository Layout](#repository-layout)
+- [🚀 Step-by-Step Execution Guide](#how-to-run)
+  - [1. Service Account Creation](#1-create-the-service-account)
+  - [2. In-Memory Scratch Space (tmpfs with Size Cap)](#2-mount-the-tmpfs-scratch-space)
+  - [3. Workload Stress Testing (CPU, Memory, Disk, All)](#3-stress-test)
+  - [4. SSH Key-Based Authentication](#4-ssh-access)
+  - [5. SSH Hardening (Port 2222, Root & Password Auth Disabled)](#5-ssh-hardening)
+  - [6. Automated Cron Monitoring & Nightly Cleanup](#6-cron-monitoring)
+  - [7. Logrotate Configuration & Verification](#7-logrotate)
+  - [8. Clean Reverse Teardown (Idempotent Teardown)](#8-cleanup)
+- [🐧 Fedora, SELinux & Firewalld Implementation Notes](#fedora-specific-notes)
+- [🧠 Deep Dive: Key Observations & Incident Analysis](#key-observations)
+- [📸 Screenshots & Verification Gallery](#screenshots--verification-gallery)
+- [🔐 Security & Credential Protection](#security)
+- [✍️ Author](#author)
+
+---
+
 ## Architecture & Lifecycle
 
 ```mermaid
@@ -310,6 +334,8 @@ mount | grep bgdsvc         # should be empty
 ps -u bgdsvc_shanjid502     # should be empty
 ```
 
+[▲ Back to Top](#table-of-contents)
+
 ---
 
 ## Fedora-specific notes
@@ -324,6 +350,8 @@ ps -u bgdsvc_shanjid502     # should be empty
 | SELinux + `authorized_keys` | `restorecon -Rv ~/.ssh` after copying keys, else sshd ignores them  |
 | SELinux + `/var/log` subdir | `restorecon -Rv /var/log/bgdsvc_shanjid502` after `mkdir`           |
 | Cron daemon                 | `crond`, managed by systemd                                         |
+
+[▲ Back to Top](#table-of-contents)
 
 ---
 
@@ -348,6 +376,8 @@ See `observations.md` for the full write-up. Summary:
   `Out of memory: Killed process`. I would use cgroups to cap the
   service, alert on memory and disk thresholds, and test against a
   staging host that mirrors production resources.
+
+[▲ Back to Top](#table-of-contents)
 
 ---
 
@@ -394,6 +424,8 @@ Every step of the lab has been executed, observed, and recorded. Expand each sec
 
 </details>
 
+[▲ Back to Top](#table-of-contents)
+
 ---
 
 ## Security
@@ -407,6 +439,8 @@ committed to this repository. Only the `.pub` file is safe to share.
 *_key
 !*.pub
 ```
+
+[▲ Back to Top](#table-of-contents)
 
 ---
 
