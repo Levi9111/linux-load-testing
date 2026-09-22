@@ -1,3 +1,5 @@
+#!/bin/bash
+
 SVC_NAME="$1"
 if [[ -z "$SVC_NAME" ]]; then
     echo "Error: SVC_NAME is not set. Pass it as an argument."

@@ -357,6 +357,6 @@ committed to this repository. Only the `.pub` file is safe to share.
 
 ## Author
 
-- Name: _<your name>_
+- Name: Shanjd Ahmad.
 - Service account: `bgdsvc_shanjid502`
 - Host: Fedora 44 (localhost)
